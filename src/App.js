@@ -6,6 +6,9 @@ import Filter from "./Components/Filter";
 import Movielist from "./Components/Movielist";
 import Add from "./Components/Add";
 import { moviesdata } from './data';
+import { BrowserRouter as Router, Route,Switch } from 'react-router-dom'
+import Description from './Components/Description';
+
 
 function App() {
   const [movielist, setMovielist] = useState(moviesdata);
@@ -22,9 +25,20 @@ setMovielist([...movielist,newmovie])
   }
   return (
     <div className="App">
+      <Router>
+     
        <Filter handlechange={handlechange} title={title} ratingChanged={ratingChanged} rate ={rate}/>
-       <Movielist movielist={movielist.filter(movie=>movie.title.toUpperCase().includes(title.toUpperCase())&& movie.rate>=rate)} />
-       <Add handleAdd={handleAdd}/>
+       <Switch> 
+      <Route exact path="/" render={()=> <Movielist movielist={movielist.filter(movie=>movie.title.toUpperCase().includes(title.toUpperCase())&& movie.rate>=rate)} /> }/>
+      <Route exact path="/Go somewhere/:id" render={(props)=><Description {...props} list={movielist}/>}/>
+       </Switch>
+       </Router> 
+       
+<Add handleAdd={handleAdd}/>
+
+
+     
+      
     </div>
   );
 }
